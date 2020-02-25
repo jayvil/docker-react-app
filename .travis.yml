@@ -1,0 +1,17 @@
+# To help with rakefile not found
+language: generic
+
+# Tell travis we need SU access
+sudo: required
+
+# Tell travis we need docker 
+services:
+    - docker
+
+# A series of commands that get executed before tests are run
+before_install:
+        - docker build -t jvilla47/docker-react -f Dockerfile.dev .
+
+# Contains commands that need to be executed to run test suite
+script:
+    - docker run -e CI=true jvilla47/docker-react yarn test
