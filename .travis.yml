@@ -15,3 +15,21 @@ before_install:
 # Contains commands that need to be executed to run test suite
 script:
     - docker run -e CI=true jvilla47/docker-react yarn test
+
+# Tell travis how to take our application and deploy it to AWS
+deploy:
+    # Force travis to use v2 (experimental) version of the dpl script thats not bugged
+    #edge: true
+    provider: elasticbeanstalk
+    # See: DockerReact-env.mge6nppkn2.us-east-2.elasticbeanstalk.com
+    region: "us-east-2"
+    app: "docker-react"
+    env: "DockerReact-env"
+    # Name of bucket travis will put zipped files into.
+    # See S3 under services in AWS
+    bucket_name: "elasticbeanstalk-us-east-2-945153756906"
+    bucket_path: "docker-react"
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
